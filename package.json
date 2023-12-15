@@ -1,0 +1,24 @@
+{
+  "name": "@dorsale/socketio",
+  "version": "1.0.0",
+  "description": "Dorsale plugin for socketio",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write src"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "3.1.1"
+  },
+  "dependencies": {
+    "@dorsale/plugin-toolbox": "^1.0.0",
+    "acorn": "^8.11.2",
+    "fastify": "^4.25.0",
+    "socket.io": "^4.7.2"
+  }
+}
