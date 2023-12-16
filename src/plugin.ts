@@ -1,13 +1,17 @@
-import { HANDLERS_PROPERTY_KEY, PLUGIN_NAME } from "./constants";
+import {
+  HANDLERS_PROPERTY_KEY,
+  PLUGIN_NAME,
+  SOCKET_IO_HANDLER_KEY,
+} from "./constants";
 import "reflect-metadata";
 import { Server } from "socket.io";
 import { FastifyInstance } from "fastify";
 import { Handler } from "./handler";
-import { getReflectPropertyOfElement } from "@dorsale/plugin-toolbox";
-import { addHandler } from "./util";
+import { addHandlers } from "./util";
 
 export const plugin = {
   name: PLUGIN_NAME,
+  customElements: [SOCKET_IO_HANDLER_KEY],
   register: ({
     pluginData,
     server,
@@ -22,16 +26,14 @@ export const plugin = {
     });
   },
   onMount: {
-    SOCKET_IO_HANDLER_KEY: (
+    [SOCKET_IO_HANDLER_KEY]: (
       target: Function,
       runtime: object,
       pluginData: any,
     ) => {
       const handlers: Handler[] =
-        getReflectPropertyOfElement(target, HANDLERS_PROPERTY_KEY) || [];
-      handlers.forEach((handler) => {
-        addHandler(handler, target, runtime, pluginData.io);
-      });
+        Reflect.getOwnMetadata(HANDLERS_PROPERTY_KEY, target.prototype) || [];
+      addHandlers(handlers, runtime, pluginData.io);
     },
   },
 };
