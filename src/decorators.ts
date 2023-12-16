@@ -1,9 +1,3 @@
-import {
-  addCustomElement,
-  addReflectPropertyToElement,
-  addReflectPropertyToElementMethod,
-  getReflectPropertyOfElement,
-} from "@dorsale/plugin-toolbox";
 import "reflect-metadata";
 import {
   HANDLER_PARAMETERS_PROPERTY_KEY,
@@ -13,19 +7,26 @@ import {
   SOCKET_IO_NAMESPACE_PROPERTY_KEY,
 } from "./constants";
 import { Handler } from "./handler";
-import acorn from "acorn";
+import * as acorn from "acorn";
+import {
+  CUSTOM_ELEMENT_NAME_PROPERTY_KEY,
+  PLUGIN_NAME_PROPERTY_KEY,
+} from "@dorsale/commons";
 
 export function SocketIOHandler(
   options: { namespace: string } | undefined = undefined,
 ) {
-  return function (target: Function) {
+  return (target: Function) => {
     if (options?.namespace)
-      addReflectPropertyToElement(
-        target,
-        SOCKET_IO_NAMESPACE_PROPERTY_KEY,
-        options.namespace,
-      );
-    addCustomElement(PLUGIN_NAME, SOCKET_IO_HANDLER_KEY, target);
+      Reflect.defineProperty(target, SOCKET_IO_NAMESPACE_PROPERTY_KEY, {
+        value: options.namespace,
+      });
+    Reflect.defineMetadata(PLUGIN_NAME_PROPERTY_KEY, PLUGIN_NAME, target);
+    Reflect.defineMetadata(
+      CUSTOM_ELEMENT_NAME_PROPERTY_KEY,
+      SOCKET_IO_HANDLER_KEY,
+      target,
+    );
   };
 }
 
@@ -40,18 +41,18 @@ export function MessageHandler(event: string) {
     });
     // @ts-ignore
     const params = methodAst.arguments.map((param) => param.name);
-    addReflectPropertyToElementMethod(
+    Reflect.defineMetadata(
       HANDLER_PARAMETERS_PROPERTY_KEY,
       params,
       target,
       propertyKey,
     );
     const handlers: Handler[] =
-      getReflectPropertyOfElement(target, HANDLERS_PROPERTY_KEY) || [];
+      Reflect.getOwnMetadata(HANDLERS_PROPERTY_KEY, target) || [];
     handlers.push({
       event,
       callbackMethodName: propertyKey,
     });
-    addReflectPropertyToElement(target, HANDLERS_PROPERTY_KEY, handlers);
+    Reflect.defineMetadata(HANDLERS_PROPERTY_KEY, handlers, target);
   };
 }
