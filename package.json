@@ -11,6 +11,7 @@
   ],
   "scripts": {
     "build": "tsc",
+    "test": "echo \"No tests yet\"",
     "lint": "eslint src --ext .ts",
     "format": "prettier --write src"
   },
