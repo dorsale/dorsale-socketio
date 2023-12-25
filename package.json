@@ -1,6 +1,6 @@
 {
   "name": "@dorsale/socketio",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Dorsale plugin for socketio",
   "main": "dist/index.js",
   "files": [
