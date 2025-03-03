@@ -1,6 +1,6 @@
 {
   "name": "@dorsale/socketio",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Dorsale plugin for socketio",
   "main": "dist/index.js",
   "files": [
@@ -19,7 +19,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-prettier": "^10.0.2",
     "prettier": "3.2.4"
   },
   "dependencies": {
